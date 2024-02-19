@@ -1,5 +1,6 @@
 <script> 
 import * as d3 from "d3";
+import { onMount } from 'svelte';
 
 const formatDate = d3.timeFormat("%-b %-d");
 
