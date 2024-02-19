@@ -8,8 +8,4 @@ import Bars from "./Chart/Bars.svelte";
 import Axis from "./ChartAxis.svelte";
 
 const formatDate = d3.timeFormate("%-b %-d")
-export let data = [];
-//export let xAcessor = d => d.x;
-export let label;
-
 </script>
