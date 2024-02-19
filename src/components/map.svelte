@@ -8,15 +8,11 @@ import Axis from "./ChartAxis.svelte";
 const formatDate = d3.timeFormat("%-b %-d");
 
 function main() {
-    d3.csv('src/components/pres.csv', d3.autoType).then(
-        function(d) {
-            for (let index = 0; index < d.length; index++) {
-                const element = d[index];
-                console.log(element.President);
-                console.log(element.Start);
-            }
-        }
-    )    
+    d3.csv('src/components/pres.csv', d3.autoType).then(data => {
+        data.forEach(row => {
+            console.log(row.President, row.Start);
+        });
+    });
 }
 
 const margin = { top: 70, right: 30, bottom: 40, left: 80};
