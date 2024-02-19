@@ -1,5 +1,4 @@
 <script> 
-import App from '../components/App.svelte';
 import * as d3 from "d3";
 import Charts from "./Chart/Chart.svelte";
 import Bars from "./Chart/Bars.svelte";
