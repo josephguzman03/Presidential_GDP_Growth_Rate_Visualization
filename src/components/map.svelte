@@ -1,8 +1,5 @@
 <script> 
 import * as d3 from "d3";
-import Charts from "./Chart/Chart.svelte";
-import Bars from "./Chart/Bars.svelte";
-import Axis from "./ChartAxis.svelte";
 
 const formatDate = d3.timeFormat("%-b %-d");
 
