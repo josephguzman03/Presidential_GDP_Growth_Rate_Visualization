@@ -8,7 +8,7 @@ import Axis from "./ChartAxis.svelte";
 const formatDate = d3.timeFormate("%-b %-d")
 
 function main() {
-    d3.csv('../data/profies.csv', d3.autoType).then(
+    d3.csv('../data/pres.csv', d3.autoType).then(
         function(d) {
             for (let index = 0; index < d.length; index++) {
                 const element = d[index];
