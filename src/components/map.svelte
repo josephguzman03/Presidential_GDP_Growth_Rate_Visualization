@@ -5,7 +5,7 @@ import Charts from "./Chart/Chart.svelte";
 import Bars from "./Chart/Bars.svelte";
 import Axis from "./ChartAxis.svelte";
 
-const formatDate = d3.timeFormate("%-b %-d")
+const formatDate = d3.timeFormat("%-b %-d");
 
 function main() {
     d3.csv('src/components/pres.csv', d3.autoType).then(
@@ -15,8 +15,6 @@ function main() {
                 console.log(element.President);
                 console.log(element.Start);
             }
-             
-
         }
     )    
 }
