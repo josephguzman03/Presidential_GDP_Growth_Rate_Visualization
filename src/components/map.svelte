@@ -12,7 +12,7 @@ let presData = [];
 
      const csv = await res.text();
 
-     tempData = d3.csvParse(csv, d3.autoType)
+     presData = d3.csvParse(csv, d3.autoType)
 
      console.log(presData);
 
