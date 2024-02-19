@@ -7,26 +7,23 @@ import Axis from "./ChartAxis.svelte";
 
 const formatDate = d3.timeFormat("%-b %-d");
 
-function main() {
-    d3.csv('src/components/pres.csv', d3.autoType).then(data => {
-        data.forEach(row => {
-            console.log(row.President, row.Start);
-        });
-    });
-}
+let presData = [];
+
+ onMount(async () => {
+
+     const res = await fetch('pres.csv'); 
+
+     const csv = await res.text();
+
+     tempData = d3.csvParse(csv, d3.autoType)
+
+     console.log(presData);
+
+ });
 
 const margin = { top: 70, right: 30, bottom: 40, left: 80};
 const width = 1200 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
-
-// const x = d3.scaletime().range([0, width]);
-// const y = d3.scaleLinear().range([height, 0]);
-
-// const svg = d3.select("#chart-container")
-//     .append("svg")
-//         .attr("width", width + margin.left + margin.right)
-//         .attr("height", height + margin.top + margin.bottoms)
-//     .append("g")
 
 
 </script>
