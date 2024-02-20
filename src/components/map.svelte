@@ -18,7 +18,7 @@
     // Define dimensions and margins
     const width = 600;
     const height = 400;
-    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+    const margin = { top: 20, right: 30, bottom: 60, left: 60 };
 
     // Remove existing plot if it exists
     d3.select('#plot').selectAll('*').remove();
@@ -31,13 +31,23 @@
       .append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
+    // Get the selected president from the dropdown
+    const selectedPresident = d3.select('#dropdown select').node().value;
+
+    // Filter data for the selected president
+    const filteredData = data.filter(d => d.President === selectedPresident);
+
+    // Parse dates
+    const parseDate = d3.timeParse('%Y-%m-%d');
+    filteredData.forEach(d => d.Date = parseDate(d.Date));
+
     // Define scales
     const xScale = d3.scaleTime()
-      .domain(d3.extent(data, d => d.Date))
+      .domain(d3.extent(filteredData, d => d.Date))
       .range([0, width]);
 
     const yScale = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.GDP)])
+      .domain([0, d3.max(filteredData, d => d.GDP)])
       .range([height, 0]);
 
     // Define line function
@@ -47,7 +57,7 @@
 
     // Draw line
     svg.append('path')
-      .datum(data)
+      .datum(filteredData)
       .attr('fill', 'none')
       .attr('stroke', 'steelblue')
       .attr('stroke-width', 1.5)
@@ -56,7 +66,8 @@
     // Draw x-axis
     svg.append('g')
       .attr('transform', `translate(0,${height})`)
-      .call(d3.axisBottom(xScale));
+      .call(d3.axisBottom(xScale)
+        .tickFormat(d3.timeFormat('%b %Y'))); // Format ticks as 'Month Year'
 
     // Draw y-axis
     svg.append('g')
@@ -79,9 +90,7 @@
 
     // Add event listener to dropdown
     dropdown.on('change', function() {
-      const selectedPresident = this.value;
-      const filteredData = data.filter(d => d.President === selectedPresident);
-      drawPlot(filteredData);
+      drawPlot(data); // Redraw plot when dropdown value changes
     });
   }
 </script>
