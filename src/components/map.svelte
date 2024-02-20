@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import * as d3 from "d3";
   
-    const formatDate = d3.timeFormat("%-b %-d");
+    const formatDate = d3.timeFormat("%Y-%m");
   
     let presData = [];
     let selectedYear = '';
