@@ -18,6 +18,7 @@
     gdpData = processData(csvData); // Process the CSV data
     presidents = [...new Set(gdpData.map(d => d.President))]; // Extract unique president names
     updateVisualization(); // Initialize the visualization
+    console.log(presidents);
   });
 
   // Function to process CSV data
