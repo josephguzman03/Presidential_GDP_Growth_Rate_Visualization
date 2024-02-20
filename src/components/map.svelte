@@ -6,7 +6,7 @@
     let presidents = [];
     let x, y, xAxis, yAxis, line;
   
-    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
+    const margin = { top: 20, right: 30, bottom: 50, left: 100 };
     const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
   
@@ -28,18 +28,19 @@
           .domain(d3.extent(data, d => d.Date))
           .range([0, width]);
   
-        y = d3.scaleLinear()
-          .domain([0, d3.max(data, d => d.GDP)])
-          .range([height, 0]);
+        y = d3.scaleBand()
+          .domain(presidents)
+          .range([0, height])
+          .padding(0.1);
   
         // Create axis
-        xAxis = d3.axisBottom(x);
+        xAxis = d3.axisBottom(x).tickFormat(d3.timeFormat("%Y"));
         yAxis = d3.axisLeft(y);
   
         // Create line generator
         line = d3.line()
           .x(d => x(d.Date))
-          .y(d => y(d.GDP));
+          .y(d => y(d.President) + y.bandwidth() / 2);
   
         // Render chart
         renderChart();
@@ -63,7 +64,12 @@
       // Add y-axis
       svg.append("g")
         .attr("class", "y-axis")
-        .call(yAxis);
+        .call(yAxis)
+        .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-0.5em")
+        .attr("dy", "-0.5em")
+        .attr("transform", "rotate(-90)");
   
       // Add line
       svg.append("path")
@@ -73,22 +79,6 @@
         .style("stroke", "#69b3a2")
         .style("stroke-width", 2)
         .style("fill", "none");
-  
-      // Add interactive slider
-      const slider = d3.select("#slider")
-        .attr("min", 0)
-        .attr("max", presidents.length - 1)
-        .attr("value", 0)
-        .on("input", updateSlider);
-  
-      // Initial slider label
-      d3.select("#president-label").text(presidents[0]);
-    }
-  
-    function updateSlider() {
-      const index = +d3.event.target.value;
-      const selectedPresident = presidents[index];
-      d3.select("#president-label").text(selectedPresident);
     }
   </script>
   
@@ -113,22 +103,6 @@
       fill: #333;
       font-size: 12px;
     }
-  
-    #slider-container {
-      margin-top: 20px;
-    }
-  
-    #president-label {
-      font-size: 18px;
-      font-weight: bold;
-      margin-top: 10px;
-    }
   </style>
   
   <div id="chart-container"></div>
-  
-  <div id="slider-container">
-    <input type="range" id="slider" />
-  </div>
-  
-  <div id="president-label"></div>
