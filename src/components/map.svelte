@@ -2,7 +2,7 @@
   // Import necessary modules
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
-  import '../css/style.css';
+
 
   // Define your data
   let data = [];
