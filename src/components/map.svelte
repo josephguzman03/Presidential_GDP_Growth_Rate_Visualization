@@ -33,7 +33,7 @@
 
   // D3 visualization
   function updateVisualization() {
-    const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+    const margin = { top: 20, right: 30, bottom: 70, left: 40 };
     const width = 600 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
@@ -43,18 +43,17 @@
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const x = d3.scaleTime()
-      .domain(d3.extent(gdpData, d => d.Date))
+    const x = d3.scaleLinear()
+      .domain(d3.extent(gdpData, d => d.GDP))
       .range([0, width]);
 
-    const y = d3.scaleLinear()
-      .domain([0, d3.max(gdpData, d => d.GDP)])
-      .nice()
+    const y = d3.scaleTime()
+      .domain(d3.extent(gdpData, d => d.Date))
       .range([height, 0]);
 
     const line = d3.line()
-      .x(d => x(d.Date))
-      .y(d => y(d.GDP));
+      .x(d => x(d.GDP))
+      .y(d => y(d.Date));
 
     svg.append("g")
       .attr("class", "x-axis")
@@ -64,6 +63,12 @@
     svg.append("g")
       .attr("class", "y-axis")
       .call(d3.axisLeft(y));
+
+    svg.append("path")
+      .datum(gdpData)
+      .attr("fill", "steelblue")
+      .attr("fill-opacity", 0.3)
+      .attr("d", area);
 
     svg.append("path")
       .datum(gdpData)
