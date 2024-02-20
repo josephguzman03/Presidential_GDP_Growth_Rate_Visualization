@@ -2,77 +2,133 @@
     import { onMount } from 'svelte';
     import * as d3 from 'd3';
   
-    let data = []; // Store the parsed data
-    let xScale, yScale; // Scales for x-axis and y-axis
-    let svg; // SVG element for the visualization
-    let slider; // Slider element for selecting the year
+    let data = [];
+    let presidents = [];
+    let x, y, xAxis, yAxis, line;
   
-    // Load data from df.csv and create the visualization
+    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
+    const width = 800 - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
+  
     onMount(() => {
-      d3.csv("df.csv", row => {
+      d3.csv("df.csv", d => {
         return {
-          President: row.President,
-          Date: new Date(row.Date), // Convert Date to JavaScript Date object
-          GDP: +row.GDP // Convert GDP to number
+          President: d.President,
+          Date: new Date(d.Date),
+          GDP: +d.GDP
         };
       }).then(parsedData => {
         data = parsedData;
   
-        // Create scales for x-axis (time) and y-axis (GDP)
-        const minYear = d3.min(data, d => d.Date.getFullYear());
-        const maxYear = d3.max(data, d => d.Date.getFullYear());
-        xScale = d3.scaleLinear().domain([minYear, maxYear]).range([0, 800]);
-        yScale = d3.scaleLinear().domain([0, d3.max(data, d => d.GDP)]).range([400, 0]);
+        // Extract unique presidents
+        presidents = Array.from(new Set(data.map(d => d.President)));
   
-        // Create SVG element
-        svg = d3.select("#visualization")
-          .append("svg")
-          .attr("width", 800)
-          .attr("height", 400);
+        // Create scales
+        x = d3.scaleTime()
+          .domain(d3.extent(data, d => d.Date))
+          .range([0, width]);
   
-        // Add x-axis
-        svg.append("g")
-          .attr("transform", "translate(0, 400)")
-          .call(d3.axisBottom(xScale));
+        y = d3.scaleLinear()
+          .domain([0, d3.max(data, d => d.GDP)])
+          .range([height, 0]);
   
-        // Add y-axis
-        svg.append("g")
-          .call(d3.axisLeft(yScale));
+        // Create axis
+        xAxis = d3.axisBottom(x);
+        yAxis = d3.axisLeft(y);
   
-        // Add slider for selecting the year
-        slider = d3.select("#slider")
-          .attr("min", minYear)
-          .attr("max", maxYear)
-          .attr("value", minYear)
-          .on("input", updateVisualization);
+        // Create line generator
+        line = d3.line()
+          .x(d => x(d.Date))
+          .y(d => y(d.GDP));
   
-        // Initial visualization
-        updateVisualization();
+        // Render chart
+        renderChart();
       });
     });
   
-    // Function to update the visualization based on the selected year
-    function updateVisualization() {
-      const selectedYear = slider.property("value");
-      const filteredData = data.filter(d => d.Date.getFullYear() === +selectedYear);
+    function renderChart() {
+      const svg = d3.select("#chart-container")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   
-      // Update visualization
-      const circles = svg.selectAll("circle").data(filteredData);
+      // Add x-axis
+      svg.append("g")
+        .attr("class", "x-axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
   
-      circles.enter().append("circle")
-        .attr("cx", d => xScale(d.Date.getFullYear()))
-        .attr("cy", d => yScale(d.GDP))
-        .attr("r", 5)
-        .attr("fill", "steelblue")
-        .merge(circles)
-        .transition()
-        .duration(500)
-        .attr("cx", d => xScale(d.Date.getFullYear()))
-        .attr("cy", d => yScale(d.GDP));
+      // Add y-axis
+      svg.append("g")
+        .attr("class", "y-axis")
+        .call(yAxis);
   
-      circles.exit().remove();
+      // Add line
+      svg.append("path")
+        .datum(data)
+        .attr("class", "line")
+        .attr("d", line)
+        .style("stroke", "#69b3a2")
+        .style("stroke-width", 2)
+        .style("fill", "none");
+  
+      // Add interactive slider
+      const slider = d3.select("#slider")
+        .attr("min", 0)
+        .attr("max", presidents.length - 1)
+        .attr("value", 0)
+        .on("input", updateSlider);
+  
+      // Initial slider label
+      d3.select("#president-label").text(presidents[0]);
+    }
+  
+    function updateSlider() {
+      const index = +d3.event.target.value;
+      const selectedPresident = presidents[index];
+      d3.select("#president-label").text(selectedPresident);
     }
   </script>
   
-  <div id="visualization"></div>
-  <input type="range" id="slider" />
+  <style>
+    .line {
+      fill: none;
+      stroke: #69b3a2;
+      stroke-width: 2;
+    }
+  
+    .x-axis path,
+    .x-axis line,
+    .y-axis path,
+    .y-axis line {
+      fill: none;
+      stroke: #ccc;
+      shape-rendering: crispEdges;
+    }
+  
+    .x-axis text,
+    .y-axis text {
+      fill: #333;
+      font-size: 12px;
+    }
+  
+    #slider-container {
+      margin-top: 20px;
+    }
+  
+    #president-label {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+  
+  <div id="chart-container"></div>
+  
+  <div id="slider-container">
+    <input type="range" id="slider" />
+  </div>
+  
+  <div id="president-label"></div>
