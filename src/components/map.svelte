@@ -1,76 +1,78 @@
 <script>
-      import { onMount } from 'svelte';
-      import * as d3 from 'd3';
-    
-      // Initialize data
-      let data = [];
-      let x, y, curve;
-    
-      // Function to compute density
-      function kernelDensityEstimator(kernel, X) {
-        return function(V) {
-          return X.map(function(x) {
-            return [x, d3.mean(V, function(v) { return kernel(x - v); })];
-          });
-        };
-      }
-    
-      function kernelEpanechnikov(k) {
-        return function(v) {
-          return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
-        };
-      }
-    
-      // Function to create visualization
-      function createVisualization(binNumber) {
-        const kde = kernelDensityEstimator(kernelEpanechnikov(7), x.ticks(binNumber))
-        const density = kde(data);
-        curve
-          .datum(density)
-          .transition()
-          .duration(1000)
-          .attr("d",  d3.line()
-            .x(function(d) { return x(d[0]); })
-            .y(function(d) { return y(d[1]); })
-          );
-      }
-    
-      // Load data on mount
-      onMount(() => {
-        d3.csv("df.csv", d => {
-          data.push(+d.GDP);
-        }).then(() => {
-          x = d3.scaleLinear()
-            .domain([d3.min(data), d3.max(data)])
-            .range([0, width]);
-    
-          y = d3.scaleLinear()
-            .range([height, 0])
-            .domain([0, 0.01]);
-    
-          curve = d3.select("#my_dataviz")
-            .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform",
-                  "translate(" + margin.left + "," + margin.top + ")")
-            .append("path")
-            .attr("class", "mypath")
-            .attr("fill", "#69b3a2")
-            .attr("opacity", ".8")
-            .attr("stroke", "#000")
-            .attr("stroke-width", 1);
-    
-          createVisualization(50); // Initial visualization with default bin number
-    
-        });
-      });
-    </script>
-    
-        
-    <!-- Add a slider -->
-    <input type="range" name="mySlider" id="mySlider" min="10" max="100" value="50">
-    
-    <!-- Create a div where the graph will take place -->
-    <div id="my_dataviz"></div>
+    import { onMount } from 'svelte';
+    import * as d3 from 'd3';
+  
+    let data = []; // Store the parsed data
+    let xScale, yScale; // Scales for x-axis and y-axis
+    let svg; // SVG element for the visualization
+    let slider; // Slider element for selecting the year
+  
+    // Load data from df.csv and create the visualization
+    onMount(() => {
+      d3.csv("df.csv", row => {
+        return {
+          President: row.President,
+          Date: new Date(row.Date), // Convert Date to JavaScript Date object
+          GDP: +row.GDP // Convert GDP to number
+        };
+      }).then(parsedData => {
+        data = parsedData;
+  
+        // Create scales for x-axis (time) and y-axis (GDP)
+        const minYear = d3.min(data, d => d.Date.getFullYear());
+        const maxYear = d3.max(data, d => d.Date.getFullYear());
+        xScale = d3.scaleLinear().domain([minYear, maxYear]).range([0, 800]);
+        yScale = d3.scaleLinear().domain([0, d3.max(data, d => d.GDP)]).range([400, 0]);
+  
+        // Create SVG element
+        svg = d3.select("#visualization")
+          .append("svg")
+          .attr("width", 800)
+          .attr("height", 400);
+  
+        // Add x-axis
+        svg.append("g")
+          .attr("transform", "translate(0, 400)")
+          .call(d3.axisBottom(xScale));
+  
+        // Add y-axis
+        svg.append("g")
+          .call(d3.axisLeft(yScale));
+  
+        // Add slider for selecting the year
+        slider = d3.select("#slider")
+          .attr("min", minYear)
+          .attr("max", maxYear)
+          .attr("value", minYear)
+          .on("input", updateVisualization);
+  
+        // Initial visualization
+        updateVisualization();
+      });
+    });
+  
+    // Function to update the visualization based on the selected year
+    function updateVisualization() {
+      const selectedYear = slider.property("value");
+      const filteredData = data.filter(d => d.Date.getFullYear() === +selectedYear);
+  
+      // Update visualization
+      const circles = svg.selectAll("circle").data(filteredData);
+  
+      circles.enter().append("circle")
+        .attr("cx", d => xScale(d.Date.getFullYear()))
+        .attr("cy", d => yScale(d.GDP))
+        .attr("r", 5)
+        .attr("fill", "steelblue")
+        .merge(circles)
+        .transition()
+        .duration(500)
+        .attr("cx", d => xScale(d.Date.getFullYear()))
+        .attr("cy", d => yScale(d.GDP));
+  
+      circles.exit().remove();
+    }
+  </script>
+  
+  <div id="visualization"></div>
+  <input type="range" id="slider" />
