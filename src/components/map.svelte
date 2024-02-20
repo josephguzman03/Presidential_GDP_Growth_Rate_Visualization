@@ -4,7 +4,7 @@
   import * as d3 from 'd3';
   
   // Define variables to store data and state
-  let OverallData = []; // Data from the CSV file
+  let gdpData = []; // Data from the CSV file
   let presidents = []; // List of presidents
   let currentPresident = ''; // Name of the current president based on the slider position
   let currentYear = getMinYear(); // Initialize the slider to the minimum year
@@ -12,8 +12,9 @@
   onMount(async () => {
     const res = await fetch('df.csv'); 
     const csv = await res.text();
-    OverallData = d3.csvParse(csv, d3.autoType)
-    console.log(OverallData.presidents);
+    tempData = d3.csvParse(csv, d3.autoType)
+    onsole.log(tempData);
+
 });
 //   // Function to load CSV data and initialize visualization
 //   onMount(async () => {
@@ -112,16 +113,4 @@
 //     // Update the visualization with the new slider value
 //     updateVisualization();
 //   }
-// </script>
-
-// <!-- HTML template for the Svelte component -->
-// <div>
-//   <!-- SVG container for the D3 visualization -->
-//   <svg id="visualization"></svg>
-  
-//   <!-- Slider input for selecting the year -->
-//   <input type="range" min={getMinYear()} max={getMaxYear()} bind:value={currentYear} on:input={updateYear}>
-  
-//   <!-- Display the name of the current president -->
-//   <p>Current President: {currentPresident}</p>
-// </div>
+</script>
