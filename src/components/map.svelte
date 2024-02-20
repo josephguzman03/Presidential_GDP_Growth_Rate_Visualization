@@ -33,24 +33,85 @@
       const yAxis = d3.axisLeft(yScale);
   
       svg.append("g")
+        .attr("class", "x-axis")
         .attr("transform", `translate(0, ${height})`)
         .call(xAxis);
   
       svg.append("g")
+        .attr("class", "y-axis")
         .call(yAxis);
   
-      const filteredData = presData.filter(d => formatTime(d.Date) === formatTime(selectedData.Date));
+      // Highlight President's terms
+      svg.selectAll(".term")
+        .data(presData)
+        .enter().append("rect")
+        .attr("class", "term")
+        .attr("x", d => xScale(d.Date))
+        .attr("y", 0)
+        .attr("width", (d, i) => {
+          if (i < presData.length - 1) {
+            return xScale(presData[i + 1].Date) - xScale(d.Date);
+          } else {
+            return xScale.range()[1] - xScale(d.Date);
+          }
+        })
+        .attr("height", height)
+        .attr("fill", (d, i) => i % 2 === 0 ? "rgba(0, 0, 0, 0.1)" : "rgba(0, 0, 0, 0)")
+        .on("mouseover", (event, d) => {
+          d3.select(event.currentTarget)
+            .attr("fill", "rgba(0, 0, 0, 0.2)");
+        })
+        .on("mouseout", (event, d) => {
+          d3.select(event.currentTarget)
+            .attr("fill", (d, i) => i % 2 === 0 ? "rgba(0, 0, 0, 0.1)" : "rgba(0, 0, 0, 0)");
+        });
   
+      // Highlight GDP data points
       svg.selectAll(".dot")
-        .data(filteredData)
+        .data(presData)
         .enter().append("circle")
         .attr("class", "dot")
         .attr("cx", d => xScale(d.Date))
         .attr("cy", d => yScale(d.GDP))
         .attr("r", 5)
         .style("fill", "steelblue")
-        .append("title")
-        .text(d => `${d.President}\nGDP: ${d.GDP}\nDate: ${formatTime(d.Date)}`);
+        .on("mouseover", (event, d) => {
+          d3.select(event.currentTarget)
+            .attr("r", 8);
+        })
+        .on("mouseout", (event, d) => {
+          d3.select(event.currentTarget)
+            .attr("r", 5);
+        });
+  
+      // Update x-axis and dots positions based on selected year
+      const slider = document.getElementById("slider");
+      slider.addEventListener("input", () => {
+        const index = parseInt(slider.value);
+        updateVisualization(presData[index]);
+      });
+  
+      function updateVisualization(selectedData) {
+        const xAxis = d3.axisBottom(xScale)
+          .tickFormat(formatTime);
+  
+        svg.select(".x-axis")
+          .call(xAxis);
+  
+        svg.selectAll(".dot")
+          .attr("cx", d => xScale(d.Date))
+          .attr("cy", d => yScale(d.GDP));
+  
+        svg.selectAll(".term")
+          .attr("x", d => xScale(d.Date))
+          .attr("width", (d, i) => {
+            if (i < presData.length - 1) {
+              return xScale(presData[i + 1].Date) - xScale(d.Date);
+            } else {
+              return xScale.range()[1] - xScale(d.Date);
+            }
+          });
+      }
     }
   
     // Create the visualization on component mount
@@ -66,31 +127,14 @@
   
   <svg id="visualization"></svg>
   
-  <div class="button-container">
-    {#each presData as data}
-      <button on:click={() => createVisualization(data)}>{data.President} - {formatTime(data.Date)}</button>
-    {/each}
-  </div>
+  <input type="range" id="slider" min="0" max="{presData.length - 1}" value="0">
   
   <style>
     .dot {
       cursor: pointer;
     }
-    .button-container {
-      display: flex;
-      gap: 5px;
-      padding: 10px;
-      overflow-x: auto;
-    }
-    .button-container button {
+  
+    .term {
       cursor: pointer;
-      padding: 5px 10px;
-      border-radius: 5px;
-      border: none;
-      background-color: #ddd;
-      transition: background-color 0.3s ease;
-    }
-    .button-container button:hover {
-      background-color: #bbb;
     }
   </style>
