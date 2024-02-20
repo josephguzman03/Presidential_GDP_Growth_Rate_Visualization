@@ -9,16 +9,18 @@
 
   // Read CSV data
   onMount(async () => {
-    gdpData = processData(data);
-    presidents = gdpData.map(d => d.President);
+    const res = await fetch('df.csv');
+    const csvData = await res.text();
+    gdpData = processData(csvData);
+    presidents = [...new Set(gdpData.map(d => d.President))];
     updateVisualization(); // Initial visualization
   });
 
   // Process CSV data
-  function processData(data) {
-    return data.map(d => ({
+  function processData(csvData) {
+    return d3.csvParse(csvData, d => ({
       President: d.President,
-      Date: new Date(d.Date),
+      Date: new Date(+d.Date, 0), // Assuming Date is a year
       GDP: +d.GDP
     }));
   }
@@ -96,6 +98,8 @@
   <p>Current President: {currentPresident}</p>
 </div>
 
+
 <!-- <style>
   /* Add your CSS styles here */
 </style> -->
+
