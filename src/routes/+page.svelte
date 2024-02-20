@@ -2,8 +2,8 @@
     import App from '/src/components/map.svelte';
 </script>
 
-<h1>Welcome to our project!</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<h1>How does GDP Change Over Time Based on Presidency? </h1>
+<p>created by Joseph Guzman, Daniel Park, and Tracy Pham</p>
 
 <App />
 
