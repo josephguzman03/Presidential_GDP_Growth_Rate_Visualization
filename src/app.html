@@ -4,13 +4,27 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%sveltekit.assets%/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>GDP Change Over Time</title> <!-- Replace with your page title -->
+    <title>GDP Change Over Time</title>
+	<link rel="stylesheet" href="css/style.css">
+	<style>
+	body {
+	  text-align: center;
+	  transition: 1000ms linear;
+	}
+	.plot-container {
+            margin: auto;
+            width: 80%;
+        }
+        .president-text {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+	} 
+	</style>
     <!-- Include SvelteKit head -->
     %sveltekit.head%
 </head>
 <body data-sveltekit-preload-data="hover">
-    <!-- Container for the chart -->
-	<svg id="visualization"></svg>
 
     <!-- Include SvelteKit body -->
     <div style="display: contents">%sveltekit.body%</div>
@@ -22,3 +36,5 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
 </body>
 </html>
+
+

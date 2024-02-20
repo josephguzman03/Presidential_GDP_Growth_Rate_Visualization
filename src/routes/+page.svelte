@@ -2,9 +2,12 @@
     import App from '/src/components/map.svelte';
 </script>
 
-<h1>How does GDP Change Over Time Based on Presidency? </h1>
+<!-- Header -->
+<h1>How Does US GDP Growth Rate Change Over Time?</h1>
 <p>Created by Joseph Guzman, Daniel Park, and Tracy Pham</p>
 
+<!-- Display the map component -->
 <App />
+
 
 
