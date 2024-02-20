@@ -231,7 +231,7 @@
   }
 </script>
 
-<style>
+<!-- <style>
   /* Define styles */
 
   #container {
@@ -302,7 +302,7 @@
     pointer-events: none;
     opacity: 0;
   }
-</style>
+</style> -->
 
 <div id="container">
   <div id="plot">
