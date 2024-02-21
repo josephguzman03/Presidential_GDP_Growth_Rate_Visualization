@@ -19,7 +19,14 @@ html, body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adding box shadow */
   }
   
-  /* Styles for the SVG chart */
+  /* Styles for the president text */
+  .president-text {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+
+
   .chart-svg {
     font-family: 'Arial', sans-serif;
     background-color: #f9f9f9;
@@ -27,49 +34,44 @@ html, body {
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-  
-  /* Styles for the axes */
+
   .axis text {
     font-size: 12px;
     fill: #777;
   }
-  
+
   .axis path,
   .axis line {
     fill: none;
     stroke: #ddd;
     shape-rendering: crispEdges;
   }
-  
-  /* Styles for the area chart */
+
   .area {
     fill: cornflowerblue;
     fill-opacity: 0.3;
     stroke: none;
   }
-  
-  /* Styles for the line chart */
+
   .line {
     fill: none;
     stroke: lightskyblue;
     stroke-width: 1.5;
   }
-  
-  /* Styles for the average line */
+
   .avg-line {
     fill: none;
     stroke: orange;
     stroke-width: 1.5;
     stroke-dasharray: 3, 3;
   }
-  
-  /* Styles for the slider */
+
   .slider {
     margin-top: 20px;
-    margin-bottom: center; /* Center doesn't exist, consider using a specific value */
+    margin-bottom: center;
     width: 80%;
   }
-  
+
   /* Tooltip styles */
   .tooltip {
     position: absolute;
@@ -79,11 +81,4 @@ html, body {
     padding: 10px;
     pointer-events: none;
     opacity: 0;
-  }
-  
-  /* Styles for the president text */
-  .president-text {
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 20px;
   }

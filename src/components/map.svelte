@@ -246,61 +246,6 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adding box shadow */
   }
 
-  .chart-svg {
-    font-family: 'Arial', sans-serif;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  .axis text {
-    font-size: 12px;
-    fill: #777;
-  }
-
-  .axis path,
-  .axis line {
-    fill: none;
-    stroke: #ddd;
-    shape-rendering: crispEdges;
-  }
-
-  .area {
-    fill: cornflowerblue;
-    fill-opacity: 0.3;
-    stroke: none;
-  }
-
-  .line {
-    fill: none;
-    stroke: lightskyblue;
-    stroke-width: 1.5;
-  }
-
-  .avg-line {
-    fill: none;
-    stroke: orange;
-    stroke-width: 1.5;
-    stroke-dasharray: 3, 3;
-  }
-
-  .slider {
-    margin-top: 20px;
-    margin-bottom: center;
-    width: 80%;
-  }
-
-  /* Tooltip styles */
-  .tooltip {
-    position: absolute;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    pointer-events: none;
-    opacity: 0;
-  }
 </style>
 
 <div id="container">
