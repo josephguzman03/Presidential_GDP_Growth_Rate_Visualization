@@ -3,7 +3,6 @@
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
 
-
   // Define your data
   let data = [];
   let svg;
@@ -231,7 +230,7 @@
   }
 </script>
 
-<!-- <style>
+<style>
   /* Define styles */
 
   #container {
@@ -298,11 +297,11 @@
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 5px;
-    padding: 8px;
+    padding: 10px;
     pointer-events: none;
     opacity: 0;
   }
-</style> -->
+</style>
 
 <div id="container">
   <div id="plot">

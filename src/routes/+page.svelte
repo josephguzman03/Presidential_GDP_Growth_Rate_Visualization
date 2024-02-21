@@ -4,13 +4,20 @@
 
 <!-- Header -->
 <h1>How Does US GDP Growth Rate Change Over Time?</h1>
-<p>Created by Joseph Guzman, Daniel Park, and Tracy Pham</p>
-
+<h3>Created by Joseph Guzman, Daniel Park, and Tracy Pham</h3>
+<p> Explore the dynamic shifts in US GDP growth rates over time and across various presidential terms by adjusting the slider. As you move the slider, observe how economic growth fluctuates throughout different administrations. Once you reach the end of the slider, hover over data points on the graph to uncover detailed information about specific dates and growth rates, providing deeper insights into historical economic trends.</p>
 <!-- Display the map component -->
 <App />
 
-<h3> Visualization Description </h3>
-<p>In an attempt to answer the question of how change in US presidencies 
+<h4> Visualization Description </h4>
+<p>The impact of US presidents on the economy is a topic of significant interest and debate among economists, 
+    policymakers, and the public alike. Factors such as the state of the economy when a president takes office, global 
+    economic conditions, legislative actions, and unforeseen events all play crucial roles in shaping economic outcomes during a 
+    presidency. While it's clear that presidential policies and decisions can influence economic growth and performance, quantifying the precise extent of their impact is complex and often subject to interpretation. 
+    <br> <br>
+    
+    
+    In an attempt to answer the question of how change in US presidencies 
     impacts the US economy in terms of GDP, we created an interactive line chart visualization using D3. We used a line chart to visualize the GDP growth rate over time because it effectively 
     shows trends and changes over a continuous period. The x-axis represents time (Month-Year), and the y-axis 
     represents the GDP growth rate in percentage (%). The title, "GDP Growth Rate Over Time", provides a clear
