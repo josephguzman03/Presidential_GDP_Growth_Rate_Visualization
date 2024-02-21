@@ -3,7 +3,7 @@
 </script>
 
 <!-- Header -->
-<h1>How Does US Presidencies impact the Economy in terms of GDP?</h1>
+<h1>US Presidencies impact the Economy in terms of GDP</h1>
 <h3>Created by Joseph Guzman, Daniel Park, and Tracy Pham</h3>
 <p> Explore the dynamic shifts in US GDP growth rates over time and across various presidential terms by adjusting the slider. As you move the slider, observe how economic growth fluctuates throughout different administrations. Once you reach the end of the slider, hover over data points on the graph to uncover detailed information about specific dates and growth rates, providing deeper insights into historical economic trends.</p>
 <!-- Display the map component -->
