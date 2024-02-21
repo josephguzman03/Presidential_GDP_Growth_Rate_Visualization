@@ -96,7 +96,7 @@
       .attr('text-anchor', 'middle')
       .style('font-size', '18px')
       .style('font-weight', 'bold')
-      .text('GDP Growth Rate Over Time');
+      .text('How Does US Presidencies impact the Economy in terms of GDP over Time?');
 
     // Append tooltip div
     const tooltip = d3.select('#plot')
