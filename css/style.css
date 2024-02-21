@@ -1,26 +1,26 @@
-/* Resetting default margin and padding */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Namdhinggo:wght@400;500;600;700;800&display=swap');
+
 html, body {
+    font-family: "Merriweather", serif;
     margin: 0;
     padding: 0;
   }
   
-  /* Applying styles to the container */
   #container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 60vh; /* Adjust the height as needed */
+    height: 60vh; 
   }
   
-  /* Styles for the plot */
   #plot {
-    max-width: 80%; /* Adjust the max-width as needed */
+    max-width: 80%; 
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adding box shadow */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
   }
   
-  /* Styles for the president text */
   .president-text {
+    font-family: "Merriweather", serif;
     font-size: 16px;
     font-weight: bold;
     margin-top: 20px;
@@ -28,7 +28,7 @@ html, body {
 
 
   .chart-svg {
-    font-family: 'Arial', sans-serif;
+    font-family: "Namdhinggo", serif;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -72,7 +72,6 @@ html, body {
     width: 80%;
   }
 
-  /* Tooltip styles */
   .tooltip {
     position: absolute;
     background-color: #f9f9f9;
